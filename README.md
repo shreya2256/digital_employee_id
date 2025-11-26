@@ -1,4 +1,4 @@
-# Digital Employee ID System (Full Stack MERN + Secure Auth)
+# 🚀Digital Employee ID System (Full Stack MERN + Secure Auth)
 
 A complete Digital Employee Identification System built with Node.js, Express, MongoDB, React, JWT authentication, role-based access, employee profile management, and image upload.
 
