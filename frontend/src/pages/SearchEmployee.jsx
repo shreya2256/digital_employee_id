@@ -1,5 +1,7 @@
+// src/pages/SearchEmployee.jsx
+import "../App.css";
 import React, { useState } from 'react';
-import API from '../api';
+import api from '../api';
 import { Link } from 'react-router-dom';
 
 export default function SearchEmployee() {
@@ -10,28 +12,27 @@ export default function SearchEmployee() {
   const search = async (e) => {
     e.preventDefault();
     try {
-      const res = await API.get(`/employee/name/${encodeURIComponent(name)}`);
+      const res = await api.get(`/employee/name/${encodeURIComponent(name)}`);
       setResults(res.data);
+      setMsg('');
       if (res.data.length === 0) setMsg('No matches');
-      else setMsg('');
     } catch (err) {
-      setMsg('Error');
+      setMsg('Error searching');
     }
   };
 
   return (
     <div>
       <h2>Find your ID card</h2>
-      <form onSubmit={search}>
-        <input placeholder="Enter full name (case-insensitive)" value={name} onChange={e=>setName(e.target.value)} required />
-        <button  className="search-btn" type="submit">Search</button>
+      <form onSubmit={search} className="form-inline">
+        <input placeholder="Enter full name" value={name} onChange={e=>setName(e.target.value)} required />
+        <button type="submit">Search</button>
       </form>
 
-      {msg && <p>{msg}</p>}
-      <div style={{marginTop:12}}>
+      <div className="results">
         {results.map(r => (
-          <div key={r._id} className="employee-card">
-            <img className="employee-photo" src={r.photoUrl ? `http://localhost:5000${r.photoUrl}` : 'https://via.placeholder.com/120x140'} alt="photo" />
+          <div className="employee-card" key={r._id}>
+            <img className="employee-photo" src={r.photoUrl ? `${process.env.REACT_APP_API_URL.replace('/api','')}${r.photoUrl}` : 'https://via.placeholder.com/120x140'} alt="photo" />
             <div>
               <div><strong>{r.name}</strong></div>
               <div>{r.designation} — {r.department}</div>
@@ -41,6 +42,8 @@ export default function SearchEmployee() {
           </div>
         ))}
       </div>
+
+      {msg && <p className="muted">{msg}</p>}
     </div>
   );
 }
